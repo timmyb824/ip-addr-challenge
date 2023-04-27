@@ -1,0 +1,24 @@
+[project]
+name = "ip-addr-challenge"
+version = "1"
+authors = [{ name = "Tim Bryant", email = "timothybryant3@gmail.com" }]
+requires-python = ">=3.10"
+dependencies = [
+    "flask",
+    "gunicorn",
+    ]
+
+[project.optional-dependencies]
+dev = ["pytest",
+    "pytest-mock",
+    "sourcery",
+    "autopep8",
+    "boto3",
+    "botocore",
+    "ansible",
+    "ansible-lint"
+    ]
+
+# compile requirements
+# pip-compile -o requirements.txt pyproject.toml
+# pip-compile --extra dev -o dev-requirements.txt pyproject.toml

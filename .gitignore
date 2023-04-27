@@ -1,0 +1,10 @@
+.github/
+.pytest_cache/
+__pycache__
+.terraform/
+.vagrant/
+.terraform.*
+terraform.tfstate*
+terraform.tfvars
+Archive/
+ip_addr_challenge.egg-info/

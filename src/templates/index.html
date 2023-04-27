@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+  <h1>IP Address</h1>
+  {% if ip_address %}
+    <div class="ip-address">
+      Your IP address: {{ ip_address }}
+    </div>
+  {% elif error_message %}
+    <div class="error-message">
+      {{ error_message }}
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

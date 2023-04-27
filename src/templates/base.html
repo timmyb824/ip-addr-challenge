@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlIP Address Challenge</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='dark-mode.js') }}"></script>
+  </head>
+
+  <body>
+    {% block content %} {% endblock %}
+    <script>toggleDarkMode();</script>
+  </body>
+  <footer class="footer">© 2023 Tim Bryant</footer>
+</html>
