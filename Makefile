@@ -14,16 +14,17 @@ install-dev-deps:
 	pip install -r requirements-dev.txt
 
 run-app:
-	gunicorn src.main:app -w 2 --threads 2 -b 0.0.0.0:5001 --reload
+	gunicorn --config ./configs/gunicorn_config.py src.main:app --reload
 
 run-app-docker:
 	docker-compose up -d --force-recreate --build
 
+# for M1 Mac use TAG=latest-arm64v8
 docker-build:
 	docker build -t timmyb824/ip-addr-challenge:${TAG} .
 
 docker-tag:
-	docker tag timmyb824/ip-addr-challenge:${TAG} timmyb824/ip-addr-challenge:latest
+	docker tag timmyb824/ip-addr-challenge:${TAG} timmyb824/ip-addr-challenge:${TAG}
 
 # docker push timmyb824/ip-addr-challenge:tagname
 docker-push:
