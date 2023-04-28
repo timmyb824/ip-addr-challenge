@@ -8,7 +8,8 @@ Table of Contents
       * [NGINX](#nginx)
       * [Docker](#docker)
       * [Vagrant](#vagrant)
-   * [Deployment](#deployment)
+      * [Github Actions](#github-actions)
+   * [Deploying the application](#deploying-the-application)
       * [Pre-requisites](#pre-requisites)
       * [Running the application locally](#running-the-application-locally)
       * [Running the application in Docker](#running-the-application-in-docker)
@@ -46,7 +47,11 @@ Docker is not a tool I chose to use for this challenge but it is a tool I chose 
 
 Vagrant is a tool I chose to use to make it easier to test the Ansible configuration. With Vagrant, I can easily spin up a local VM and test the Ansible configuration against it before deploying the application to AWS.
 
-## Deployment
+### Github Actions
+
+Github Actions is a tool I chose to use to automate the testing of the application. With Github Actions, I can easily build and test the application every time I push a commit to the repository. It's also responsible for publishing the latest Docker image to Docker Hub.
+
+## Deploying the application
 
 ### Pre-requisites
 
