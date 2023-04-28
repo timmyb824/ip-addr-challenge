@@ -13,16 +13,7 @@ spec:
         app: ip-address-challenge
     spec:
       containers:
-        - args:
-            - gunicorn
-            - src.main:app
-            - -w
-            - "2"
-            - --threads
-            - "2"
-            - -b
-            - 0.0.0.0:5001
-          name: ip-address-challenge
+        - name: ip-address-challenge
           image: timmyb824/ip-addr-challenge:latest
           ports:
             - containerPort: 5001
@@ -33,7 +24,6 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "500m"
-
 ---
 apiVersion: v1
 kind: Service
