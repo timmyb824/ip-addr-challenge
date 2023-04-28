@@ -13,4 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["gunicorn", "src.main:app", "b", "0.0.0.0:5001"]
+EXPOSE 5001
+
+RUN chmod +x ./configs/entrypoint.sh
+
+ENTRYPOINT ["sh", "./configs/entrypoint.sh"]

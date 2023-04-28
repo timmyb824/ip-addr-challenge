@@ -19,11 +19,12 @@ run-app:
 run-app-docker:
 	docker-compose up -d --force-recreate --build
 
+# for M1 Mac use TAG=latest-arm64v8
 docker-build:
 	docker build -t timmyb824/ip-addr-challenge:${TAG} .
 
 docker-tag:
-	docker tag timmyb824/ip-addr-challenge:${TAG} timmyb824/ip-addr-challenge:latest
+	docker tag timmyb824/ip-addr-challenge:${TAG} timmyb824/ip-addr-challenge:${TAG}
 
 # docker push timmyb824/ip-addr-challenge:tagname
 docker-push:
