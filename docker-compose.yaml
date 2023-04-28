@@ -1,8 +1,8 @@
 version: "3"
 services:
   ip-addr-challenge:
-    # build: .
-    image: timmyb824/ip-addr-challenge:latest
+    build: .
+    # image: timmyb824/ip-addr-challenge:latest
     container_name: ip-addr-challenge
     ports:
       - "5001:5001"

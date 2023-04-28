@@ -1,3 +1,16 @@
+Table of Contents
+=================
+   * [Summary](#summary)
+   * [Tooling](#tooling)
+      * [Python](#python)
+      * [Terraform](#terraform)
+      * [Ansible](#ansible)
+      * [NGINX](#nginx)
+      * [Docker](#docker)
+      * [Vagrant](#vagrant)
+   * [Deployment](#deployment)
+      * [Pre-requisites](#pre-requisites)
+
 # Summary
 
 While exploring the documentation site for my employer at the time, I came across an interesting challenge one of the teams would give to prospective candidates. The challenge was to create a simple web application that displayed the IP address of the requestor. The candidate could use any language or framework they wanted. The only requirement was that the application had to be deployed AWS. To deploy the app, the candidate could use any tools they wanted including scripting directly against the AWS API. The only requirement was that the candidate had to provide the team with a script to clean up the resources created for the application.
@@ -32,7 +45,27 @@ Vagrant is a tool I chose to use to make it easier to test the Ansible configura
 
 ## Deployment
 
-The Terraform configuration for the application is located in the `deployment` directory along with the Ansible configuration in `server.yaml`. The Terraform configuration finds the latest Ubuntu 22.04 AMI, before it creates a Security Group and an EC2 instance. Once the instance is created, Terraform uses the `local-exec` provisioner to run the Ansible command needed to configure the instance. The Ansible configuration installs the required dependencies, copies the application files to the instance, and starts the application. To deploy the application, run the following commands:
+### Pre-requisites
+
+To deploy the application, you will need to have the following installed:
+
+* [Terraform](https://www.terraform.io/downloads.html)
+  * I recommend using [tfenv](https://github.com/tfutils/tfenv) to manage your Terraform versions
+* [Python 3.11](https://www.python.org/downloads/) with [pip](https://pip.pypa.io/en/stable/installing/)
+    * I recommend using [pyenv](https://github.com/pyenv/pyenv) to manage your Python versions
+    * I also recommend you set up a [virtual environment](https://docs.python.org/3/tutorial/venv.html) for the application. pyenv has a [plugin](https://github.com/pyenv/pyenv-virtualenv) pyenv-virtualenv that makes this very easy.
+* [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+  * Ansible is listed as a dependency in the `requirements-dev.txt` file. You can install it by running `pip install -r requirements-dev.txt`
+
+### Running the application locally
+
+To run the application locally, you will need to install the dependencies listed in the `requirements.txt` file. You can do this by running `pip install -r requirements.txt`. Once the dependencies are installed, you can run the application by running `gunicorn src.main:app -w 2 --threads 2 -b 0.0.0.0:5001 --reload`. The application will be available at `http://localhost:5001`. You can also run the application using Docker by running `docker-compose up`. The application will again be available at `http://localhost:80` since it is served by NGINX.
+
+### Deploying the application to AWS
+
+The Terraform (`main.tf`) and Ansible (`server.yaml`) configurations for the application are located in the `deployment/` directory. The Terraform configuration finds the latest Ubuntu 22.04 AMI, before it creates a Security Group and an EC2 instance. Once the instance is created, Terraform uses the `local-exec` provisioner to run the Ansible command needed to configure the instance. The Ansible configuration installs the required dependencies, copies the application files to the instance, and starts the application.
+
+To deploy the application, you need to ensure you have a valid AWS access key and secret key set as environment variables. Additionally, you should have an SSH key pair created in AWS. Once you have these, you can deploy the application by running the following commands:
 
 ```bash
 cd deployment
