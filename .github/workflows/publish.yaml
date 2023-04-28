@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - 'tshoot_publish-workflow'
 
 jobs:
   dockerPublish:
