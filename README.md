@@ -16,7 +16,7 @@ Table of Contents
 
 # Summary
 
-While exploring the documentation site for my employer at the time, I came across an interesting challenge one of the teams would give to prospective candidates. The challenge was to create a simple web application that displayed the IP address of the requestor. The candidate could use any language or framework they wanted. The only requirement was that the application had to be deployed AWS. To deploy the app, the candidate could use any tools they wanted including scripting directly against the AWS API. The only requirement was that the candidate had to provide the team with a script to clean up the resources created for the application.
+While exploring the documentation site for my employer at the time, I came across an interesting challenge one of the teams would give to prospective candidates. The challenge was to create a simple web application that displayed the IP address of the requestor. The candidate could use any language or framework they wanted. The only requirement was that the application had to be deployed to AWS. To deploy the app, the candidate could use any tools they wanted including scripting directly against the AWS API. The only requirement was that the candidate had to provide the team with a script to clean up the resources created for the application.
 
 For some, this challenge would be trivial but the idea behind the challenge was not to see how much a candidate knew about web applications and AWS. The idea was to see how the candidate approached the problem and how they solved it. I thought this was a great idea and decided to complete the challenge myself. For the web application, I chose to use Python and Flask. For the deployment, I chose to use Terraform and Ansible. In the next few sections, I will go more in-depth on the tools I chose and why I chose them.
 
@@ -36,11 +36,11 @@ Terraform is an excellent tool for deploying and managing infrastructure but it 
 
 ### NGINX
 
-NGINX is a tool I chose to use to serve the application. I wanted to make sure the application could be served over HTTPS and NGINX makes it very easy to do this.
+NGINX is a tool I chose to use to serve the application. I wanted to make sure the application could be served over HTTP/HTTPS and NGINX makes it very easy to do this.
 
 ### Docker
 
-Docker is not a tool I chose to use for this challenge but it is a tool I chose to use to make the application easier to run. with Docker I can easily run the application locally without having to install Python or any of the dependencies required by the application.
+Docker is not a tool I chose to use for this challenge but it is a tool I chose to use to make the application easier to run. With Docker I can easily run the application locally without having to install Python or any of the dependencies required by the application.
 
 ### Vagrant
 
@@ -62,13 +62,13 @@ To deploy the application, you will need to have the following installed:
 
 ### Running the application locally
 
-To run the application locally, you will need to install the dependencies listed in the `requirements.txt` file. You can do this by running `pip install -r requirements.txt`. Once the dependencies are installed, you can run the application by running `gunicorn src.main:app -w 2 --threads 2 -b 0.0.0.0:5001 --reload`. The application will be available at `http://localhost:5001`. You can also run the application using Docker by running `docker-compose up`. The application will again be available at `http://localhost:80` since it is served by NGINX.
+To run the application locally, you will need to install the dependencies listed in the `requirements.txt` file. You can do this by running `pip install -r requirements.txt`. Once the dependencies are installed, you can run the application by running `gunicorn src.main:app -w 2 --threads 2 -b 0.0.0.0:5001 --reload`. The application will be available at `http://localhost:5001`. You can also run the application using Docker by running `docker-compose up`. The application will then be available at `http://localhost:80` since it is served by NGINX.
 
 ### Deploying the application to AWS
 
 The Terraform (`main.tf`) and Ansible (`server.yaml`) configurations for the application are located in the `deployment/` directory. The Terraform configuration finds the latest Ubuntu 22.04 AMI, before it creates a Security Group and an EC2 instance. Once the instance is created, Terraform uses the `local-exec` provisioner to run the Ansible command needed to configure the instance. The Ansible configuration installs the required dependencies, copies the application files to the instance, and starts the application.
 
-To deploy the application, you need to ensure you have a valid AWS access key and secret key set as environment variables. Additionally, you should have an SSH key pair created in AWS. Once you have these, you can deploy the application by running the following commands:
+To deploy the application, you need to ensure you have a valid AWS access key and secret key set as environment variables. Additionally, you should have an SSH key pair created in AWS. Be sure to specify the key name and path the key locally within the variables section of the terraform `main.tf` configuration. Once you have these, you can deploy the application by running the following commands:
 
 ```bash
 cd deployment
