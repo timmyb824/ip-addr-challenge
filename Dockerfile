@@ -13,4 +13,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["gunicorn", "src.main:app"]
+CMD ["gunicorn", "src.main:app", "--host", "0.0.0.0", "--port", "5001"]
