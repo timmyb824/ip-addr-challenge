@@ -10,6 +10,9 @@ Table of Contents
       * [Vagrant](#vagrant)
    * [Deployment](#deployment)
       * [Pre-requisites](#pre-requisites)
+      * [Running the application locally](#running-the-application-locally)
+      * [Running the application in Docker](#running-the-application-in-docker)
+      * [Running the application in k8s](#running-the-application-in-k8s)
 
 # Summary
 
@@ -72,4 +75,33 @@ cd deployment
 terraform init
 terraform plan
 terraform apply
+```
+
+To clean up the resources created by Terraform, you can run the following command:
+
+```bash
+terraform destroy
+```
+
+### Deploy the app to k8s
+
+To run the application in k8s, you will need to have a cluster up and running. I recommend using [kind](https://kind.sigs.k8s.io/docs/user/quick-start/) to create a local cluster. Once you have a cluster up and running, you can deploy the application by running the following command:
+
+```bash
+cd kubernetes
+kubectl apply -f deployment.yaml
+```
+
+To access the application, you can use port-forwarding by running the following command:
+
+```bash
+kubectl port-forward service/ip-address-challenge-service 5001:5001
+```
+
+The application will then be available at `http://localhost:5001`.
+
+To delete the application, you can run the following command:
+
+```bash
+kubectl delete -f deployment.yaml
 ```
