@@ -1,0 +1,18 @@
+- name: Install and configure ip addr app
+  hosts: all
+  become: true
+
+  vars_files:
+    - vars.yaml
+
+  pre_tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+  tasks:
+    - name: Include git tasks
+      ansible.builtin.import_tasks: git.yaml
+
+    - name: Include ip addr tasks
+      ansible.builtin.import_tasks: ip_addr.yaml
