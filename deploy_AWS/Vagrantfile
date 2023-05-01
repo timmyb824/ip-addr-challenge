@@ -1,0 +1,10 @@
+
+Vagrant.configure("2") do |config|
+    # M1 mac
+    config.vm.box = "jeffnoxon/ubuntu-20.04-arm64"
+
+    config.vm.provision "ansible" do |ansible|
+      ansible.playbook = "./ansible/playbook.yaml"
+      ansible.config_file = "./ansible/ansible.cfg"
+    end
+  end
