@@ -1,8 +1,3 @@
-variable "pm_api_url" {
-  description = "value of the Proxmox API URL"
-  type = string
-}
-
 variable "pm_node" {
   description = "value of the Proxmox node name"
   type = string
@@ -28,15 +23,20 @@ variable "vm_gw" {
   type = string
 }
 
-variable "pm_api_token_id" {
-  description = "value of the Proxmox API token ID"
-  type = string
-}
+# variable "pm_api_token_id" {
+#   description = "value of the Proxmox API token ID"
+#   type = string
+# }
 
-variable "pm_api_token_secret" {
-  description = "value of the Proxmox API token secret"
-  type = string
-}
+# variable "pm_api_token_secret" {
+#   description = "value of the Proxmox API token secret"
+#   type = string
+# }
+
+# variable "pm_api_url" {
+#   description = "value of the Proxmox API URL"
+#   type = string
+# }
 
 variable "storage_name" {
   description = "value of the Proxmox storage name"
@@ -75,7 +75,7 @@ variable "cloudflare_email" {
   sensitive   = true
 }
 
-variable "cloudflare_token" {
-  description = "Cloudflare API token created at https://dash.cloudflare.com/profile/api-tokens"
-  type        = string
-}
+# variable "cloudflare_token" {
+#   description = "Cloudflare API token created at https://dash.cloudflare.com/profile/api-tokens"
+#   type        = string
+# }
