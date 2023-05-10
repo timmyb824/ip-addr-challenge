@@ -29,3 +29,18 @@ docker-tag:
 # docker push timmyb824/ip-addr-challenge:tagname
 docker-push:
 	docker push timmyb824/ip-addr-challenge:${TAG}
+
+# provider can be AWS or Proxmox
+deploy-vm:
+	cd deploy/terraform_$(PROV) && terraform init && terraform apply -auto-approve
+
+destroy-vm:
+	cd deploy/terraform_$(PROV) && terraform destroy -auto-approve
+
+configure-vm:
+	cd deploy/ansible && ansible-playbook -i inventory.ini playbook.yaml
+
+deploy-configure:
+	make deploy-vm PROV=$(PROV)
+	sleep 60
+	make configure-vm
