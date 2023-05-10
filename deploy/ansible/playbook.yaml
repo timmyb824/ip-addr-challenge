@@ -4,6 +4,7 @@
 
   vars_files:
     - vars.yaml
+    - tf_vars.yaml
 
   pre_tasks:
     - name: Update apt cache
@@ -16,3 +17,6 @@
 
     - name: Include ip addr tasks
       ansible.builtin.import_tasks: ip_addr.yaml
+
+    - name: Include cloudflare tunnel tasks
+      ansible.builtin.import_tasks: cloudflare.yaml

@@ -84,13 +84,13 @@ resource "aws_instance" "ec2" {
 
   # runs ansible playbook on instance
   provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u '${var.ec2_user}' -i '${aws_instance.ec2.public_dns},' --private-key '${var.private_key}' ./ansible/server.yaml"
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u '${var.ec2_user}' -i '${aws_instance.ec2.public_dns},' --private-key '${var.private_key}' ../ansible/server.yaml"
   }
 }
 
 # Generate inventory file
 resource "local_file" "inventory" {
-  filename = "./ansible/hosts.ini"
+  filename = "../ansible/inventory.ini"
   content  = <<EOF
 [webserver]
 ${aws_instance.ec2.public_ip}

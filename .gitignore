@@ -7,3 +7,5 @@ terraform.tfstate*
 terraform.tfvars
 Archive/
 ip_addr_challenge.egg-info/
+deploy/terraform_Proxmox/files
+.ansible_vault.pass
