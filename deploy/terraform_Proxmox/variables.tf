@@ -38,6 +38,11 @@ variable "vm_gw" {
 #   type = string
 # }
 
+variable public_key {
+  description = "value of the Proxmox public key"
+  type = string
+}
+
 variable "storage_name" {
   description = "value of the Proxmox storage name"
   type = string

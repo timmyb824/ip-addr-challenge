@@ -1,6 +1,6 @@
-data "local_file" "public_key" {
-  filename = "${path.module}/files/id_master_key.pub"
-}
+# data "local_file" "public_key" {
+#   filename = "${path.module}/files/id_master_key.pub"
+# }
 
 resource "proxmox_vm_qemu" "node" {
   name        = var.vm_name
@@ -32,7 +32,8 @@ resource "proxmox_vm_qemu" "node" {
   # cloud-init settings
   # adjust the ip and gateway addresses as needed
   ipconfig0 = "ip=${var.vm_ip}/24,gw=${var.vm_gw}"
-  sshkeys   = data.local_file.public_key.content
+  sshkeys   = var.public_key
+  # sshkeys   = data.local_file.public_key.content
 }
 
 # Generate inventory file
