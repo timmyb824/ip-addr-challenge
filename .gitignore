@@ -9,3 +9,5 @@ Archive/
 ip_addr_challenge.egg-info/
 deploy/terraform_Proxmox/files
 .ansible_vault.pass
+.envrc
+.vscode/
