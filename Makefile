@@ -31,6 +31,12 @@ docker-push:
 	docker push timmyb824/ip-addr-challenge:${TAG}
 
 # provider can be AWS or Proxmox
+terraform-init:
+	cd deploy/terraform/$(PROV) && terraform init
+
+terraform-plan:
+	cd deploy/terraform/$(PROV) && terraform plan
+
 deploy-vm:
 	cd deploy/terraform/$(PROV) && terraform init && terraform apply -auto-approve
 

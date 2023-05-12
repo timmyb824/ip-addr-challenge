@@ -25,8 +25,14 @@ variable "vm_gw" {
 }
 
 variable public_key {
-  description = "value of the Proxmox public key"
+  description = "path of the Proxmox public key"
   type = string
+}
+
+variable "private_key" {
+  description = "path of the Proxmox private key"
+  type = string
+  default = ""
 }
 
 variable "storage_name" {
@@ -84,3 +90,8 @@ variable "cloudflare_email" {
   sensitive   = true
 }
 
+variable ansible_vars_file {
+  description = "Path to the Ansible vars_file to be generated"
+  type        = string
+  default     = ""
+}

@@ -5,6 +5,7 @@ module "cloudflare_tunnel" {
   cloudflare_zone_id    = var.cloudflare_zone_id
   cloudflare_zone       = var.cloudflare_zone
   cloudflare_email      = var.cloudflare_email
+  ansible_vars_file     = var.ansible_vars_file
 }
 
 # data "local_file" "public_key" {
@@ -41,7 +42,8 @@ resource "proxmox_vm_qemu" "node" {
   # cloud-init settings
   # adjust the ip and gateway addresses as needed
   ipconfig0 = "ip=${var.vm_ip}/24,gw=${var.vm_gw}"
-  sshkeys   = var.public_key
+  # sshkeys   = var.public_key
+  sshkeys   = file("~/.ssh/id_master_key.pub")
   # sshkeys   = data.local_file.public_key.content
 }
 
@@ -50,6 +52,6 @@ resource "local_file" "inventory" {
   filename = "../../ansible/inventory.ini"
   content  = <<EOF
 [webserver]
-${var.vm_ip}  ansible_connection=ssh  ansible_user=ubuntu  ansible_ssh_private_key_file=~/.ssh/id_master_key
+${var.vm_ip}  ansible_connection=ssh  ansible_user=ubuntu  ansible_ssh_private_key_file=${var.private_key}
 EOF
 }
