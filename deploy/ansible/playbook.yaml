@@ -3,9 +3,9 @@
   become: true
 
   vars:
-    server_name: "127.0.0.1" # use 127.0.0.1 if not using cloudflare or a domain
-    git_enabled: false # set to false if not using git to pull the repo; files will be copied instead
-    cf_enabled: false # set to false if not using cloudflare
+    server_name: "ip-addr.timmybtech.com" # use 127.0.0.1 if not using cloudflare or a domain
+    git_enabled: true # set to false if not using git to pull the repo; files will be copied instead
+    cf_enabled: true # set to false if not using cloudflare
 
   # vars_files:
   #   - git_vars.yaml # comment out if not using git

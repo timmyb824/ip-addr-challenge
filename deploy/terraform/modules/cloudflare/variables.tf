@@ -20,6 +20,12 @@ variable "cloudflare_email" {
   sensitive   = true
 }
 
+variable ansible_vars_file {
+  description = "Path to the Ansible vars_file to be generated"
+  type        = string
+  default     = ""
+}
+
 # Declared using environment variable
 # variable "cloudflare_token" {
 #   description = "Cloudflare API token created at https://dash.cloudflare.com/profile/api-tokens"

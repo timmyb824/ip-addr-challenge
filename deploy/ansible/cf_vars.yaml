@@ -1,0 +1,6 @@
+# Ansible vars_file containing variable values from Terraform.
+tunnel_id: e0fbbaea-ba78-4842-a31c-adf3817c4282
+account: 69dc498ce1d93c457823ff5caa06732f
+tunnel_name: ip-addr-app proxmox tunnel
+secret: 7a7GLMkigPmngI3oDxVMkffW7r4CVVPO2euJjq0bogZtoBs=
+zone: timmybtech.com

@@ -20,6 +20,7 @@ resource "cloudflare_record" "ip-addr-app" {
 }
 
 resource "local_file" "cf_ansible_vars_file" {
+  filename = var.ansible_vars_file
   content = <<-DOC
     # Ansible vars_file containing variable values from Terraform.
     tunnel_id: ${cloudflare_tunnel.auto_tunnel.id}
@@ -28,6 +29,4 @@ resource "local_file" "cf_ansible_vars_file" {
     secret: ${random_id.tunnel_secret.b64_std}
     zone: ${var.cloudflare_zone}
     DOC
-
-  filename = "../../../ansible/cf_vars.yaml"
 }
