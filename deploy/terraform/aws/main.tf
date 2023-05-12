@@ -1,6 +1,12 @@
-provider "aws" {
-  region = "us-east-1"
-}
+# Cloudflare module (if you want to use a cloudflare tunnel):
+# comment out if not using cloudflare tunnel
+# module "cloudflare_tunnel" {
+#   source                = "../modules/cloudflare"
+#   cloudflare_account_id = var.cloudflare_account_id
+#   cloudflare_zone_id    = var.cloudflare_zone_id
+#   cloudflare_zone       = var.cloudflare_zone
+#   cloudflare_email      = var.cloudflare_email
+# }
 
 data "aws_ami" "latest_ubuntu_22_04" {
   most_recent = true
@@ -29,12 +35,6 @@ output "ubuntu_22_04_ami_id" {
 resource "aws_security_group" "ip_addr_app" {
   name_prefix = "ip_addr_app_"
 
-  ingress {
-    from_port   = 8000
-    to_port     = 8000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
   ingress {
     from_port   = 22
     to_port     = 22
@@ -68,53 +68,14 @@ resource "aws_instance" "ec2" {
     device_name = "/dev/xvda"
     volume_size = 8
   }
-
-  # make sure instance is ready for ansbile to be run; could also use depends_on = [aws_instance.ec2]
-  provisioner "remote-exec" {
-    inline = ["echo 'Ready to accept connections'"]
-
-    connection {
-      type        = "ssh"
-      host        = self.public_ip
-      user        = var.ec2_user
-      timeout     = "2m"
-      private_key = file(var.private_key)
-    }
-  }
-
-  # runs ansible playbook on instance
-  provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u '${var.ec2_user}' -i '${aws_instance.ec2.public_dns},' --private-key '${var.private_key}' ../ansible/server.yaml"
-  }
 }
 
 # Generate inventory file
 resource "local_file" "inventory" {
-  filename = "../ansible/inventory.ini"
+  filename = "../../ansible/inventory.ini"
   content  = <<EOF
 [webserver]
-${aws_instance.ec2.public_ip}
+${aws_instance.ec2.public_ip} ansible_connection=ssh  ansible_user=${var.ec2_user}  ansible_ssh_private_key_file=${var.private_key}
 EOF
 }
 
-variable "key_name" {
-  type = string
-  default = "awsCommon"
-}
-
-variable "tags" {
-  type = map(string)
-  default = {
-    app = "ip_addr_app"
-  }
-}
-
-variable "ec2_user" {
-  type = string
-  default = "ubuntu"
-}
-
-variable "private_key" {
-  type = string
-  default = "~/.ssh/awsCommon.pem"
-}

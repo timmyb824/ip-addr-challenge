@@ -2,9 +2,14 @@
   hosts: all
   become: true
 
-  vars_files:
-    - vars.yaml
-    - tf_vars.yaml
+  vars:
+    server_name: "127.0.0.1" # use 127.0.0.1 if not using cloudflare or a domain
+    git_enabled: false # set to false if not using git to pull the repo; files will be copied instead
+    cf_enabled: false # set to false if not using cloudflare
+
+  # vars_files:
+  #   - git_vars.yaml # comment out if not using git
+  #   - cf_vars.yaml # comment out if not using cloudflare
 
   pre_tasks:
     - name: Update apt cache
@@ -14,9 +19,12 @@
   tasks:
     - name: Include git tasks
       ansible.builtin.import_tasks: git.yaml
+      when: git_enabled | default(false)
 
     - name: Include ip addr tasks
       ansible.builtin.import_tasks: ip_addr.yaml
 
+    # comment out if not using cloudflare
     - name: Include cloudflare tunnel tasks
       ansible.builtin.import_tasks: cloudflare.yaml
+      when: cf_enabled | default(false)

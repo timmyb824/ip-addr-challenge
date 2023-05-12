@@ -8,12 +8,16 @@
     path: '/home/{{ ansible_user }}/ip-addr/'
   register: dir_stat
 
-- name: Copy app files if app directory does not exist
+- name: Copy some files to /etc/myapp/
   ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     mode: '0644'
-    src: "{{ playbook_dir }}/../../"
-    dest: '/home/{{ ansible_user }}/ip-addr/'
   when: not dir_stat.stat.exists
+  with_items:
+    - { src: "{{ playbook_dir }}/../../src/", dest: "/home/{{ ansible_user }}/ip-addr/src/"}
+    - { src: "{{ playbook_dir }}/../../configs/gunicorn_config.py", dest: "/home/{{ ansible_user }}/ip-addr/configs/" }
+    - { src: "{{ playbook_dir }}/../../requirements.txt", dest: "/home/{{ ansible_user }}/ip-addr/" }
 
 - name: Install python requirements
   ansible.builtin.pip:
