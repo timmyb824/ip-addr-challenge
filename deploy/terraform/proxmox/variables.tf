@@ -1,3 +1,4 @@
+# Proxmox variables
 variable "pm_node" {
   description = "value of the Proxmox node name"
   type = string
@@ -23,21 +24,6 @@ variable "vm_gw" {
   type = string
 }
 
-# variable "pm_api_token_id" {
-#   description = "value of the Proxmox API token ID"
-#   type = string
-# }
-
-# variable "pm_api_token_secret" {
-#   description = "value of the Proxmox API token secret"
-#   type = string
-# }
-
-# variable "pm_api_url" {
-#   description = "value of the Proxmox API URL"
-#   type = string
-# }
-
 variable public_key {
   description = "value of the Proxmox public key"
   type = string
@@ -58,6 +44,24 @@ variable "vm_disk_size" {
   type = string
 }
 
+# Declared using environment variables
+# variable "pm_api_token_id" {
+#   description = "value of the Proxmox API token ID"
+#   type = string
+# }
+
+# variable "pm_api_token_secret" {
+#   description = "value of the Proxmox API token secret"
+#   type = string
+# }
+
+# variable "pm_api_url" {
+#   description = "value of the Proxmox API URL"
+#   type = string
+# }
+
+# Cloudflare variables (if you want to use a cloudflare tunnel)
+# comment out if not using cloudflare tunnel
 variable "cloudflare_zone" {
   description = "Domain used to expose the GCP VM instance to the Internet"
   type        = string
@@ -80,7 +84,3 @@ variable "cloudflare_email" {
   sensitive   = true
 }
 
-# variable "cloudflare_token" {
-#   description = "Cloudflare API token created at https://dash.cloudflare.com/profile/api-tokens"
-#   type        = string
-# }

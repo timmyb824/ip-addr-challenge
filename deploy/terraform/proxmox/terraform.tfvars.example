@@ -1,0 +1,20 @@
+# Proxmox
+vm_name             = "vm400"
+vm_id               = "400"
+pm_node             = "pve"
+vm_ip               = "192.168.86.246"
+vm_gw               = "192.168.86.1"
+storage_name        = "local-zfs"
+vm_memory           = "512"
+vm_disk_size        = "8G"
+public_key          = "ssh-ed25519..."
+## Declare here (must be listed with provider block) or using environment variables
+# pm_api_url          = "https://192.168.86.123:8006/api2/json" # 160 or 199
+# pm_api_token_id     = "user@pam!terraform"
+# pm_api_token_secret = "43ce3b66-basdad-asdasd-21323"
+
+# Cloudflare (if you want to use a cloudflare tunnel)
+# cloudflare_zone           = "example.com"
+# cloudflare_zone_id        = ""
+# cloudflare_account_id     = ""
+# cloudflare_email          = "user@example.com"

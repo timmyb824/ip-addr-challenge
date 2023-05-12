@@ -1,0 +1,6 @@
+# Cloudflare (if you want to use a cloudflare tunnel)
+# comment out if not using cloudflare tunnel
+cloudflare_zone           = "example.com"
+cloudflare_zone_id        = ""
+cloudflare_account_id     = ""
+cloudflare_email          = "user@example.com"

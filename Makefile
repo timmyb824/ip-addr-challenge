@@ -32,10 +32,10 @@ docker-push:
 
 # provider can be AWS or Proxmox
 deploy-vm:
-	cd deploy/terraform_$(PROV) && terraform init && terraform apply -auto-approve
+	cd deploy/terraform/$(PROV) && terraform init && terraform apply -auto-approve
 
 destroy-vm:
-	cd deploy/terraform_$(PROV) && terraform destroy -auto-approve
+	cd deploy/terraform/$(PROV) && terraform destroy -auto-approve
 
 configure-vm:
 	cd deploy/ansible && ansible-playbook -i inventory.ini playbook.yaml

@@ -10,7 +10,6 @@ resource "cloudflare_tunnel" "auto_tunnel" {
   secret     = random_id.tunnel_secret.b64_std
 }
 
-# Creates the CNAME record that routes ssh_app.${var.cloudflare_zone} to the tunnel.
 # Leave .cfargotunnel.com as-is, it's the domain used by Cloudflare for tunnels.
 resource "cloudflare_record" "ip-addr-app" {
   zone_id = var.cloudflare_zone_id
@@ -18,4 +17,17 @@ resource "cloudflare_record" "ip-addr-app" {
   value   = "${cloudflare_tunnel.auto_tunnel.id}.cfargotunnel.com"
   type    = "CNAME"
   proxied = true
+}
+
+resource "local_file" "cf_ansible_vars_file" {
+  content = <<-DOC
+    # Ansible vars_file containing variable values from Terraform.
+    tunnel_id: ${cloudflare_tunnel.auto_tunnel.id}
+    account: ${var.cloudflare_account_id}
+    tunnel_name: ${cloudflare_tunnel.auto_tunnel.name}
+    secret: ${random_id.tunnel_secret.b64_std}
+    zone: ${var.cloudflare_zone}
+    DOC
+
+  filename = "../../../ansible/cf_vars.yaml"
 }

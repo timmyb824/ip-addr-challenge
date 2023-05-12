@@ -1,5 +1,4 @@
 
-server_name: "ip-addr.timmybtech.com" #'127.0.0.1' # for testing
 key_path: "$HOME/.ssh/id_rsa_git"
 key_title: id-addr-challenge
 github_access_token: !vault |

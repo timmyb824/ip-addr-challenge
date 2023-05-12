@@ -1,3 +1,12 @@
+# Cloudflare module (if you want to use a cloudflare tunnel):
+module "cloudflare_tunnel" {
+  source                = "../modules/cloudflare"
+  cloudflare_account_id = var.cloudflare_account_id
+  cloudflare_zone_id    = var.cloudflare_zone_id
+  cloudflare_zone       = var.cloudflare_zone
+  cloudflare_email      = var.cloudflare_email
+}
+
 # data "local_file" "public_key" {
 #   filename = "${path.module}/files/id_master_key.pub"
 # }
@@ -38,7 +47,7 @@ resource "proxmox_vm_qemu" "node" {
 
 # Generate inventory file
 resource "local_file" "inventory" {
-  filename = "../ansible/inventory.ini"
+  filename = "../../ansible/inventory.ini"
   content  = <<EOF
 [webserver]
 ${var.vm_ip}  ansible_connection=ssh  ansible_user=ubuntu  ansible_ssh_private_key_file=~/.ssh/id_master_key
