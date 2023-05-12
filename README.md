@@ -11,9 +11,9 @@ Table of Contents
       * [Github Actions](#github-actions)
    * [Deploying the application](#deploying-the-application)
       * [Pre-requisites](#pre-requisites)
-      * [Running the application locally](#running-the-application-locally)
-      * [Running the application in Docker](#running-the-application-in-docker)
-      * [Running the application in k8s](#running-the-application-in-k8s)
+      * [Deploying the application to AWS](#deploying-the-application-to-aws)
+      * [Deploying the application to Proxmox](#deploying-the-application-to-proxmox)
+      * [Deploy the app to k8s](#deploy-the-app-to-k8s)
 
 # Summary
 
