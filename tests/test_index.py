@@ -17,4 +17,4 @@ def test_index_page(client):
     response = client.get("/")
     # assert that the response status code is 200
     assert response.status_code == 200
-    assert b"Your IP address: 127.0.0.1" in response.data
+    assert b"Tim Bryant" in response.data
