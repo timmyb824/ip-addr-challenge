@@ -115,7 +115,7 @@ To deploy the application to Proxmox, you will need to have a Proxmox cluster up
 To run the application in k8s, you will need to have a cluster up and running. I recommend using [kind](https://kind.sigs.k8s.io/docs/user/quick-start/) to create a local cluster. Once you have a cluster up and running, you can deploy the application by running the following command:
 
 ```bash
-cd kubernetes
+cd deploy/kubernetes
 kubectl apply -f deployment.yaml
 ```
 

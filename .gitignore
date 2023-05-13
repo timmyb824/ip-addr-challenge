@@ -11,3 +11,4 @@ deploy/terraform/proxmox/files/id_master_key.pub
 .ansible_vault.pass
 .envrc
 .vscode/
+app.json

@@ -78,4 +78,3 @@ resource "local_file" "inventory" {
 ${aws_instance.ec2.public_ip} ansible_connection=ssh  ansible_user=${var.ec2_user}  ansible_ssh_private_key_file=${var.private_key}
 EOF
 }
-
