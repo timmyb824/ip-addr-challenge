@@ -6,6 +6,8 @@ requires-python = ">=3.10"
 dependencies = [
     "flask",
     "gunicorn",
+    "requests",
+    "python-json-logger"
     ]
 
 [project.optional-dependencies]
@@ -16,7 +18,9 @@ dev = ["pytest",
     "boto3",
     "botocore",
     "ansible",
-    "ansible-lint"
+    "ansible-lint",
+    "black",
+    "pre-commit",
     ]
 
 # compile requirements

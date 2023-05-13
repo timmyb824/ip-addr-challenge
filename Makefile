@@ -2,10 +2,10 @@ pip-compile:
 	pip install pip-tools pip-autoremove
 
 compile-deps:
-	pip-compile -o requirements.txt pyproject.toml
+	pip-compile --resolver=backtracking -o requirements.txt pyproject.toml
 
 compile-dev-deps:
-	pip-compile --extra dev -o requirements-dev.txt pyproject.toml
+	pip-compile --resolver=backtracking --extra dev -o requirements-dev.txt pyproject.toml
 
 install-deps:
 	pip install -r requirements.txt

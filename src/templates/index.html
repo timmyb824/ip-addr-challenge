@@ -2,13 +2,16 @@
 {% block content %}
 
 <div class="container">
-  <h1>IP Address</h1>
+  <h1>IP Address Finder</h1>
   {% if ip_address %}
     <div class="ip-address">
       Your IP address: {{ ip_address }}
+      <br><br>
+      Your location is: {{ location }}
     </div>
   {% elif error_message %}
     <div class="error-message">
+      <br>
       {{ error_message }}
     </div>
   {% endif %}
