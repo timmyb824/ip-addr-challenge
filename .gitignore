@@ -12,3 +12,5 @@ deploy/terraform/proxmox/files/id_master_key.pub
 .envrc
 .vscode/
 app.json
+cf_vars.yaml
+inventory.ini

@@ -1,12 +1,13 @@
 # Cloudflare module (if you want to use a cloudflare tunnel):
 # comment out if not using cloudflare tunnel
-# module "cloudflare_tunnel" {
-#   source                = "../modules/cloudflare"
-#   cloudflare_account_id = var.cloudflare_account_id
-#   cloudflare_zone_id    = var.cloudflare_zone_id
-#   cloudflare_zone       = var.cloudflare_zone
-#   cloudflare_email      = var.cloudflare_email
-# }
+module "cloudflare_tunnel" {
+  source                = "../modules/cloudflare"
+  cloudflare_account_id = var.cloudflare_account_id
+  cloudflare_zone_id    = var.cloudflare_zone_id
+  cloudflare_zone       = var.cloudflare_zone
+  cloudflare_email      = var.cloudflare_email
+  ansible_vars_file     = var.ansible_vars_file
+}
 
 data "aws_ami" "latest_ubuntu_22_04" {
   most_recent = true

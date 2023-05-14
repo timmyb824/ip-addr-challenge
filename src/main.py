@@ -11,17 +11,18 @@ def index():
     try:
         ip_address = get_ip_address()
         if ip_address is None or ip_address == "":
-            error_message = "Error obtaining IP address"
+            error_message = "Unable to obtain IPv4 address"
             logger.error(error_message)
             return render_template("index.html", error_message=error_message)
         location = get_location(ip_address)
         if location == "None, None, None":
+            error_message = "Unable to obtain location information"
             # Handle the error condition
             logger.error(
                 "Error obtaining location information for IP address: %s", ip_address
             )
             return render_template(
-                "index.html", error_message="Error obtaining location information"
+                "index.html", error_message=error_message, ip_address=ip_address
             )
         logger.info("IP Address: %s Location: %s", ip_address, location)
         return render_template("index.html", ip_address=ip_address, location=location)
