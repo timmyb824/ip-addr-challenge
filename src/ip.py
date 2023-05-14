@@ -1,4 +1,5 @@
 import requests
+import ipaddress
 from flask import request
 from src.logs import logger
 
@@ -16,10 +17,22 @@ def get_location(ip_address: str) -> str | None:
 
 
 def get_ip_address() -> str | None:
+    # sourcery skip: use-contextlib-suppress, use-named-expression
     try:
-        ip_address = (
-            request.headers.get("X-Forwarded-For", "").split(",")[0].split(":")[-1]
-        )
-    except KeyError:
-        ip_address = request.remote_addr
-    return ip_address
+        ip_address = request.headers.get("X-Forwarded-For", "").split(",")[0].strip()
+        if ip_address and ipaddress.ip_address(ip_address).version == 4:
+            return ip_address
+    except ValueError:
+        # The IP address is not a valid IPv4 or IPv6 address
+        pass
+
+    try:
+        ip_address = request.headers.get("X-Real-IP", "").strip()
+        if ip_address and ipaddress.ip_address(ip_address).version == 4:
+            return ip_address
+    except ValueError:
+        # The IP address is not a valid IPv4 or IPv6 address
+        pass
+
+    # Fall back to remote_addr
+    return request.remote_addr
