@@ -1,11 +1,12 @@
 - name: Include vars
   ansible.builtin.include_vars: "{{ playbook_dir }}/vars/nginx_vars.yaml"
 
-- name: Install NGINX
-  ansible.builtin.apt:
-    name:
-      - nginx
-    state: present
+# Installed during certbot tasks
+# - name: Install NGINX
+#   ansible.builtin.apt:
+#     name:
+#       - nginx
+#     state: present
 
 - name: Copy NGINX configuration file
   ansible.builtin.template:

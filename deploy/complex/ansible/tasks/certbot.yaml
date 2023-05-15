@@ -1,6 +1,12 @@
 - name: Include vars
   ansible.builtin.include_vars: "{{ playbook_dir }}/vars/certbot_vars.yaml"
 
+- name: Install NGINX
+  ansible.builtin.apt:
+    name:
+      - nginx
+    state: present
+
 - name: Ensure latest version of snapd (install)
   ansible.builtin.command: snap install core
 
