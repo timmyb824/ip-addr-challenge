@@ -3,12 +3,12 @@
   become: true
 
   vars:
-    git_enabled: false # set to false if not using git to pull the repo; files will be copied instead
+    git_enabled: true # set to false if not using git to pull the repo; files will be copied instead
     cf_enabled: false # set to true if using cloudflare tunnels
-    nginx_enabled: false
-    cf_ddns_enabled: false
-    tailscale_enabled: false
-    docker_enabled: false
+    nginx_enabled: true
+    cf_ddns_enabled: true
+    tailscale_enabled: true
+    docker_enabled: true
     certbot_enabled: true
 
   pre_tasks:
