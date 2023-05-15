@@ -59,3 +59,6 @@ deploy-simple:
 
 destroy-simple:
 	cd deploy/simple/terraform/aws && terraform destroy -auto-approve
+
+run-pre-commit:
+	pre-commit run --all-files
