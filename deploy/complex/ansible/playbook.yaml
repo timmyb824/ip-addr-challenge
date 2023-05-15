@@ -20,7 +20,7 @@
     # https://github.com/artis3n/ansible-role-tailscale
     - role: artis3n.tailscale
       vars:
-        TAILSCALE_AUTHKEY: "{{ lookup('env', 'TAILSCALE_AUTHKEY') }}"
+        tailscale_authkey: "{{ lookup('env', 'TAILSCALE_AUTHKEY') }}"
       when: tailscale_enabled | default(false)
 
     # https://github.com/geerlingguy/ansible-role-docker
