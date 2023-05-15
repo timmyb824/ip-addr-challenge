@@ -3,12 +3,12 @@
   become: true
 
   vars:
-    git_enabled: true # set to false if not using git to pull the repo; files will be copied instead
+    git_enabled: false # set to false if not using git to pull the repo; files will be copied instead
     cf_enabled: false # set to true if using cloudflare tunnels
-    nginx_enabled: true
-    cf_ddns_enabled: true
-    tailscale_enabled: true
-    docker_enabled: true
+    nginx_enabled: false
+    cf_ddns_enabled: false
+    tailscale_enabled: false
+    docker_enabled: false
     certbot_enabled: true
 
   pre_tasks:
@@ -43,10 +43,6 @@
     - name: Include ip addr tasks
       ansible.builtin.import_tasks: tasks/ip_addr.yaml
 
-    - name: Include nginx tasks
-      ansible.builtin.import_tasks: tasks/nginx.yaml
-      when: nginx_enabled | default(false)
-
     - name: Include cloudflare tunnel tasks
       ansible.builtin.import_tasks: tasks/cloudflare.yaml
       when: cf_enabled | default(false)
@@ -58,3 +54,7 @@
     - name: Include install certbot tasks
       ansible.builtin.import_tasks: tasks/certbot.yaml
       when: certbot_enabled | default(false)
+
+    - name: Include nginx tasks
+      ansible.builtin.import_tasks: tasks/nginx.yaml
+      when: nginx_enabled | default(false)

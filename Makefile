@@ -57,8 +57,5 @@ deploy-simple:
 	sleep 30
 	cd deploy/simple/ansible && ansible-playbook -i inventory.ini playbook.yaml
 
-destroy-simple:
-	cd deploy/simple/terraform/aws && terraform destroy -auto-approve
-
 run-pre-commit:
 	pre-commit run --all-files

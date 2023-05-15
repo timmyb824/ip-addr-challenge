@@ -1,8 +1,11 @@
 - name: Include vars
   ansible.builtin.include_vars: "{{ playbook_dir }}/vars/certbot_vars.yaml"
 
-- name: Ensure latest version of snapd is installed
-  ansible.builtin.command: snap install core; snap refresh core
+- name: Ensure latest version of snapd (install)
+  ansible.builtin.command: snap install core
+
+- name: Ensure latest version of snapd (refresh)
+  ansible.builtin.command: snap refresh core
 
 - name: Install certbot with snap
   community.general.snap:
@@ -21,17 +24,6 @@
   ansible.builtin.command: certbot certonly --nginx -d {{ server_name }} --agree-tos --email {{ email }} --non-interactive --no-eff-email
   args:
     creates: /etc/letsencrypt/live/{{ server_name }}/fullchain.pem
-
-- name: Test NGINX configuration
-  ansible.builtin.command: nginx -t
-  register: nginx_test
-  ignore_errors: true
-
-- name: Restart NGINX
-  ansible.builtin.service:
-    name: nginx
-    state: restarted
-  when: nginx_test.rc == 0
 
 - name: Test automatic renewal
   ansible.builtin.command: certbot renew --dry-run
