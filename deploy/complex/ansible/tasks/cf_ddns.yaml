@@ -1,0 +1,45 @@
+---
+- name: Include cloudflare-ddns vars
+  ansible.builtin.include_vars: "{{ playbook_dir }}/vars/cf_ddns_vars.yaml"
+
+- name: Create cloudflare-ddns directory
+  ansible.builtin.file:
+    path: /home/{{ ansible_user }}/cloudflare-ddns
+    state: directory
+    mode: '0644'
+
+- name: Set ownership and permissions for the app directory
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/cloudflare-ddns/"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0755'
+
+- name: Copy cloudflare-ddns files
+  ansible.builtin.template:
+    src: "{{ playbook_dir }}/templates/cf-ddns-docker-compose.yaml.j2"
+    dest: "/home/{{ ansible_user }}/cloudflare-ddns/docker-compose.yaml"
+    mode: '0644'
+
+# for older installs of docker-compose
+- name: Check is docker-compose installed
+  ansible.builtin.shell: command -v docker-compose >/dev/null 2>&1
+  register: is_docker_compose_install
+  ignore_errors: true
+
+- debug: msg="{{ is_docker_compose_install.rc }}" # it returns rc 0 if installed or 127 if not
+- debug: var=is_docker_compose_install
+
+- name: Create docker container with docker-compose
+  ansible.builtin.shell: docker-compose up -d --force-recreate
+  ignore_errors: true
+  when: is_docker_compose_install.rc == 0
+  args:
+    chdir: '/home/{{ ansible_user }}/cloudflare-ddns/'
+
+- name: Create docker container with docker compose
+  ansible.builtin.shell: docker compose up -d --force-recreate
+  ignore_errors: true
+  when: is_docker_compose_install.rc != 0
+  args:
+    chdir: '/home/{{ ansible_user }}/cloudflare-ddns/'

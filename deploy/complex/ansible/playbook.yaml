@@ -1,0 +1,60 @@
+- name: Install and configure ip-addr app
+  hosts: all
+  become: true
+
+  vars:
+    git_enabled: true # set to false if not using git to pull the repo; files will be copied instead
+    cf_enabled: false # set to true if using cloudflare tunnels
+    nginx_enabled: true
+    cf_ddns_enabled: true
+    tailscale_enabled: true
+    docker_enabled: true
+    certbot_enabled: true
+
+  pre_tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+  roles:
+    # https://github.com/artis3n/ansible-role-tailscale
+    - role: artis3n.tailscale
+      vars:
+        TAILSCALE_AUTHKEY: "{{ lookup('env', 'TAILSCALE_AUTHKEY') }}"
+      when: tailscale_enabled | default(false)
+
+    # https://github.com/geerlingguy/ansible-role-docker
+    # docker_daemon_json did not work with this role
+    - role: geerlingguy.docker
+      vars:
+        docker_users:
+          - "{{ ansible_user }}"
+        docker_daemon_json:
+          log-driver: loki
+          log-opts:
+            loki-url: "{{ lookup('env','LOKI_ADDRESS') }}"
+      when: docker_enabled | default(false)
+
+  tasks:
+    - name: Include git tasks
+      ansible.builtin.import_tasks: tasks/git.yaml
+      when: git_enabled | default(false)
+
+    - name: Include ip addr tasks
+      ansible.builtin.import_tasks: tasks/ip_addr.yaml
+
+    - name: Include nginx tasks
+      ansible.builtin.import_tasks: tasks/nginx.yaml
+      when: nginx_enabled | default(false)
+
+    - name: Include cloudflare tunnel tasks
+      ansible.builtin.import_tasks: tasks/cloudflare.yaml
+      when: cf_enabled | default(false)
+
+    - name: Include install cloudflare-ddns tasks
+      ansible.builtin.import_tasks: tasks/cf_ddns.yaml
+      when: cf_ddns_enabled | default(false)
+
+    - name: Include install certbot tasks
+      ansible.builtin.import_tasks: tasks/certbot.yaml
+      when: certbot_enabled | default(false)

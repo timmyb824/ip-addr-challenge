@@ -7,10 +7,11 @@ terraform.tfstate*
 terraform.tfvars
 Archive/
 ip_addr_challenge.egg-info/
-deploy/terraform/proxmox/files/id_master_key.pub
 .ansible_vault.pass
 .envrc
+.env
 .vscode/
 app.json
 cf_vars.yaml
 inventory.ini
+.DS_Store

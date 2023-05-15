@@ -1,0 +1,43 @@
+- name: Include vars
+  ansible.builtin.include_vars: "{{ playbook_dir }}/vars/certbot_vars.yaml"
+
+- name: Ensure latest version of snapd is installed
+  ansible.builtin.command: snap install core; snap refresh core
+
+- name: Install certbot with snap
+  community.general.snap:
+    name: certbot
+    classic: true
+
+- name: Symlink certbot to /usr/bin
+  ansible.builtin.file:
+    src: /snap/bin/certbot
+    dest: /usr/bin/certbot
+    state: link
+
+# --resuse-key is used to prevent rate limiting (e.g. --cert-path /etc/letsencrypt/live/example.com/privkey.pem --reuse-key)
+# will need to save the private key somewhere to reuse it
+- name: Configure Certbot
+  ansible.builtin.command: certbot certonly --nginx -d {{ server_name }} --agree-tos --email {{ email }} --non-interactive --no-eff-email
+  args:
+    creates: /etc/letsencrypt/live/{{ server_name }}/fullchain.pem
+
+- name: Test NGINX configuration
+  ansible.builtin.command: nginx -t
+  register: nginx_test
+  ignore_errors: true
+
+- name: Restart NGINX
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+  when: nginx_test.rc == 0
+
+- name: Test automatic renewal
+  ansible.builtin.command: certbot renew --dry-run
+  register: certbot_renewal
+  ignore_errors: true
+
+# output the result of the renewal test
+- ansible.builtin.debug: var=certbot_renewal
+- ansible.builtin.debug: msg="{{ certbot_renewal.stdout }}"

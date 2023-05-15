@@ -28,5 +28,6 @@ resource "local_file" "cf_ansible_vars_file" {
     tunnel_name: ${cloudflare_tunnel.auto_tunnel.name}
     secret: ${random_id.tunnel_secret.b64_std}
     zone: ${var.cloudflare_zone}
+    service_address: ${var.service_address}
     DOC
 }

@@ -1,0 +1,58 @@
+- name: Install Python3, pip, and NGINX
+  ansible.builtin.apt:
+    name: ['python3', 'python3-pip']
+    state: present
+
+- name: Check if app directory exists
+  ansible.builtin.stat:
+    path: '/home/{{ ansible_user }}/ip-addr/'
+  register: dir_stat
+
+- name: Copy files to app directory
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: '0644'
+  when: not dir_stat.stat.exists
+  with_items:
+    - { src: "{{ playbook_dir }}/../../../src/", dest: "/home/{{ ansible_user }}/ip-addr/src/"}
+    - { src: "{{ playbook_dir }}/../../../configs/gunicorn.config.py", dest: "/home/{{ ansible_user }}/ip-addr/configs/" }
+    - { src: "{{ playbook_dir }}/../../../requirements.txt", dest: "/home/{{ ansible_user }}/ip-addr/" }
+
+- name: Set ownership and permissions for the app directory
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/ip-addr/"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0755'
+
+- name: Ensure logs directory has correct permissions
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/ip-addr/src/logs"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0777'
+    recurse: true
+
+- name: Install python requirements
+  ansible.builtin.pip:
+    requirements: requirements.txt
+    chdir: /home/{{ ansible_user }}/ip-addr/
+
+- name: Copy systemd unit file
+  ansible.builtin.template:
+    src: '{{ playbook_dir }}/templates/ip-addr.service.j2'
+    dest: /etc/systemd/system/ip-addr.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Start ip-addr service
+  ansible.builtin.systemd:
+    name: ip-addr.service
+    state: started
+    enabled: true

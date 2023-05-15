@@ -1,0 +1,20 @@
+- name: Install and configure ip-addr app
+  hosts: all
+  become: true
+
+  vars:
+    nginx_enabled: true
+
+  pre_tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+  tasks:
+
+    - name: Include ip addr tasks
+      ansible.builtin.import_tasks: tasks/ip_addr.yaml
+
+    - name: Include nginx tasks
+      ansible.builtin.import_tasks: tasks/nginx.yaml
+      when: nginx_enabled | default(false)

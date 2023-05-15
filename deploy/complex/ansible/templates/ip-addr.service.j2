@@ -6,7 +6,7 @@ After=network.target
 User={{ ansible_user }}
 Group={{ ansible_user }}
 WorkingDirectory=/home/{{ ansible_user }}/ip-addr/
-ExecStart=/usr/local/bin/gunicorn --config ./configs/gunicorn_config.py src.main:app
+ExecStart=/usr/local/bin/gunicorn --config ./configs/gunicorn.config.py src.main:app
 
 [Install]
 WantedBy=multi-user.target

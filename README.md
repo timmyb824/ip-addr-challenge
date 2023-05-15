@@ -81,12 +81,12 @@ To deploy the application to AWS we use a combination of Terraform and Ansible. 
 1. Ensure you have a valid AWS access key and secret key set as environment variables
 2. Ensure you have an SSH key pair created in AWS
 3. Update the `key_name` and `private_key` variables in the `variables.tf` file to match the name of the key pair you created in step 2 and the path to the private key on your local machine.
-4. Update the `server_name` variable within the ansible playbook `deploy/ansible/playbook.yaml` to match the domain name you want to use for the application (use '127.0.0.1' if you don't have a domain name)
-5. Run `make deploy-configure PROV=aws` to deploy the application to AWS
+4. Update the `server_name` variable within the ansible playbook `deploy/ansible/playbook.yaml` to match the domain name you want to use for the application
+5. Run `make deploy-simple` to deploy the application to AWS
 6. If you don't have make installed, you can run the following commands instead:
 
 ```bash
-cd deploy/aws
+cd deploy/simple/terraform/aws
 terraform init
 terraform plan
 terraform apply
@@ -99,10 +99,10 @@ To clean up the resources created by Terraform, you can run the following comman
 
 ```bash
 # from the root of the project
-make destroy-vm PROV=aws
+make destroy-simple
 
 # OR
-cd deploy/aws
+cd deploy/simple/terraform/aws
 terraform destroy
 ```
 

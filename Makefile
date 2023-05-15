@@ -14,7 +14,7 @@ install-dev-deps:
 	pip install -r requirements-dev.txt
 
 run-app:
-	gunicorn --config ./configs/gunicorn_config.py src.main:app --reload
+	gunicorn --config ./configs/gunicorn.config.py src.main:app --reload
 
 run-app-docker:
 	docker-compose up -d --force-recreate --build
@@ -32,21 +32,33 @@ docker-push:
 
 # provider can be AWS or Proxmox
 terraform-init:
-	cd deploy/terraform/$(PROV) && terraform init
+	cd deploy/$(VERSION)/terraform/$(PROV) && terraform init
 
 terraform-plan:
-	cd deploy/terraform/$(PROV) && terraform plan
+	cd deploy/$(VERSION)/terraform/$(PROV) && terraform plan
 
-deploy-vm:
-	cd deploy/terraform/$(PROV) && terraform init && terraform apply -auto-approve
+terraform-apply:
+	cd deploy/$(VERSION)/terraform/$(PROV) && terraform init && terraform apply -auto-approve
 
 destroy-vm:
-	cd deploy/terraform/$(PROV) && terraform destroy -auto-approve
+	cd deploy/$(VERSION)/terraform/$(PROV) && terraform destroy -auto-approve
 
 configure-vm:
-	cd deploy/ansible && ansible-playbook -i inventory.ini playbook.yaml
+	cd deploy/$(VERSION)/ansible && ansible-playbook -i inventory.ini playbook.yaml
 
-deploy-configure:
-	make deploy-vm PROV=$(PROV)
-	sleep 60
-	make configure-vm
+deploy-complex:
+	make terraform-apply VERSION=complex PROV=$(PROV)
+	sleep 30
+	make configure-vm VERSION=complex
+
+deploy-simple:
+	rm -f src/logs/app.json
+	cd deploy/simple/terraform/aws && terraform init && terraform apply -auto-approve
+	sleep 30
+	cd deploy/simple/ansible && ansible-playbook -i inventory.ini playbook.yaml
+
+destroy-simple:
+	cd deploy/simple/terraform/aws && terraform destroy -auto-approve
+
+run-pre-commit:
+	pre-commit run --all-files

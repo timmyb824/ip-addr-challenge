@@ -1,5 +1,5 @@
 - name: Include vars
-  ansible.builtin.include_vars: cf_vars.yaml
+  ansible.builtin.include_vars: /vars/cf_vars.yaml
 
 - name: Download the cloudflared Linux package
   ansible.builtin.shell: wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
@@ -20,7 +20,7 @@
       loglevel: info
       ingress:
         - hostname: "ip-addr.{{ zone }}"
-          service: http://localhost:80
+          service: {{ service_address }}
         - service: http_status:404
 
 - name: Create the tunnel credentials file for cloudflared

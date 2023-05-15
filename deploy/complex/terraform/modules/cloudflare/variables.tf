@@ -26,6 +26,12 @@ variable ansible_vars_file {
   default     = ""
 }
 
+variable "service_address" {
+  description = "IP address and port of the service to be exposed"
+  type        = string
+  default     = ""
+}
+
 # Declared using environment variable
 # variable "cloudflare_token" {
 #   description = "Cloudflare API token created at https://dash.cloudflare.com/profile/api-tokens"
