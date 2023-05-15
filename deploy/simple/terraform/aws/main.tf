@@ -1,14 +1,3 @@
-# Cloudflare module (if you want to use a cloudflare tunnel):
-# comment out if not using cloudflare tunnel
-module "cloudflare_tunnel" {
-  source                = "../modules/cloudflare"
-  cloudflare_account_id = var.cloudflare_account_id
-  cloudflare_zone_id    = var.cloudflare_zone_id
-  cloudflare_zone       = var.cloudflare_zone
-  cloudflare_email      = var.cloudflare_email
-  ansible_vars_file     = var.ansible_vars_file
-}
-
 data "aws_ami" "latest_ubuntu_22_04" {
   most_recent = true
   owners      = ["099720109477"] # Canonical
@@ -45,6 +34,12 @@ resource "aws_security_group" "ip_addr_app" {
   ingress {
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 5001
+    to_port     = 5001
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

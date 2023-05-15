@@ -1,0 +1,3 @@
+cloudflare_subdomain: "{{ lookup('env', 'CLOUDFLARE_SUBDOMAIN') }}"
+cloudflare_zone: "{{ lookup('env', 'CLOUDFLARE_ZONE') }}"
+cloudflare_api_key: "{{ lookup('env', 'CF_API_KEY') }}"
