@@ -1,0 +1,47 @@
+- name: Check if Loki Docker driver plugin is installed
+  ansible.builtin.command:
+    cmd: docker plugin inspect loki
+  register: plugin_inspect_result
+  changed_when: false
+  failed_when: false
+
+
+- name: Install Loki Docker driver plugin
+  ansible.builtin.command:
+    cmd: docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+  when: plugin_inspect_result.rc != 0
+  ignore_errors: true
+
+- name: Check if Loki Docker driver plugin is enabled
+  ansible.builtin.command:
+    cmd: docker plugin inspect loki
+  register: plugin_inspect_result
+  changed_when: false
+  failed_when: false
+
+- name: Enable Loki Docker driver plugin
+  ansible.builtin.command:
+    cmd: docker plugin enable loki
+  when: plugin_inspect_result.rc != 0
+
+- name: Create /etc/docker/daemon.json
+  ansible.builtin.copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+          "debug" : true,
+          "log-driver": "loki",
+          "log-opts": {
+              "loki-url": "{{ lookup('env','LOKI_ADDRESS') }}",
+              "loki-batch-size": "400"
+          }
+      }
+
+- name: Reload Docker daemon
+  ansible.builtin.command:
+    cmd: systemctl daemon-reload
+
+- name: Restart Docker
+  ansible.builtin.service:
+    name: docker
+    state: restarted

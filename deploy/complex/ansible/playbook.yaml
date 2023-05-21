@@ -3,13 +3,14 @@
   become: true
 
   vars:
-    git_enabled: true # set to false if not using git to pull the repo; files will be copied instead
+    git_enabled: false # set to false if not using git to pull the repo; files will be copied instead
     cf_enabled: false # set to true if using cloudflare tunnels
-    nginx_enabled: true
-    cf_ddns_enabled: true
-    tailscale_enabled: true
-    docker_enabled: true
-    certbot_enabled: true
+    nginx_enabled: false
+    cf_ddns_enabled: false
+    tailscale_enabled: false
+    docker_enabled: false
+    loki_docker_enabled: false
+    certbot_enabled: false
 
   pre_tasks:
     - name: Update apt cache
@@ -21,6 +22,7 @@
     - role: artis3n.tailscale
       vars:
         tailscale_authkey: "{{ lookup('env', 'TAILSCALE_AUTHKEY') }}"
+        # tailscale_args: "--accept-routes" # use on linux to access subnet routing
       when: tailscale_enabled | default(false)
 
     # https://github.com/geerlingguy/ansible-role-docker
@@ -29,13 +31,13 @@
       vars:
         docker_users:
           - "{{ ansible_user }}"
-        docker_daemon_json:
-          log-driver: loki
-          log-opts:
-            loki-url: "{{ lookup('env','LOKI_ADDRESS') }}"
       when: docker_enabled | default(false)
 
   tasks:
+    - name: Include loki_docker logging tasks
+      ansible.builtin.import_tasks: tasks/loki_docker.yaml
+      when: loki_docker_enabled | default(false)
+
     - name: Include git tasks
       ansible.builtin.import_tasks: tasks/git.yaml
       when: git_enabled | default(false)
