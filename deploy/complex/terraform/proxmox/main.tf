@@ -43,7 +43,7 @@ resource "proxmox_vm_qemu" "node" {
   # adjust the ip and gateway addresses as needed
   ipconfig0 = "ip=${var.vm_ip}/24,gw=${var.vm_gw}"
   # sshkeys   = var.public_key
-  sshkeys   = file("~/.ssh/id_master_key.pub")
+  sshkeys   = file("${var.public_key}")
   # sshkeys   = data.local_file.public_key.content
 }
 
