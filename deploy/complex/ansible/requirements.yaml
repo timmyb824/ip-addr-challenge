@@ -1,3 +1,6 @@
 ---
 - src: geerlingguy.docker
 - src: artis3n.tailscale
+- src: patrickjahns.promtail
+- src: community.general
+- src: ansible.posix
