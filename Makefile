@@ -48,7 +48,7 @@ configure-vm:
 
 deploy-complex:
 	make terraform-apply VERSION=complex PROV=$(PROV)
-	sleep 30
+	sleep ${SLEEP}
 	make configure-vm VERSION=complex
 
 deploy-simple:

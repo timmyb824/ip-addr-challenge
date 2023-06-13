@@ -1,0 +1,2 @@
+hostname: "{{ inventory_hostname }}"
+zabbix_server_ip: "{{ lookup('env', 'ZABBIX_URL') }}"

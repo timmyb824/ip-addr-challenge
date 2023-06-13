@@ -3,26 +3,28 @@
   become: true
 
   vars:
-    git_enabled: false # set to false if not using git to pull the repo; files will be copied instead
+    git_enabled: true # set to false if not using git to pull the repo; files will be copied instead
     cf_enabled: false # set to true if using cloudflare tunnels
-    nginx_enabled: false
+    ipaddr_enabled: true
     cf_ddns_enabled: false
-    tailscale_enabled: false
+    tailscale_enabled: true
     docker_enabled: false
     loki_docker_enabled: false
-    certbot_enabled: false
+    nginx_certbot_enabled: true
+    zabbix_enabled: false
+    promtail_enabled: false
+    firewalld_enabled: true
 
   pre_tasks:
     - name: Update apt cache
-      ansible.builtin.apt:
-        update_cache: true
+      ansible.builtin.import_tasks: tasks/update_pkgs.yaml
 
   roles:
     # https://github.com/artis3n/ansible-role-tailscale
     - role: artis3n.tailscale
       vars:
         tailscale_authkey: "{{ lookup('env', 'TAILSCALE_AUTHKEY') }}"
-        # tailscale_args: "--accept-routes" # use on linux to access subnet routing
+        tailscale_args: "--accept-routes" # use on linux to access subnet routing
       when: tailscale_enabled | default(false)
 
     # https://github.com/geerlingguy/ansible-role-docker
@@ -44,19 +46,28 @@
 
     - name: Include ip addr tasks
       ansible.builtin.import_tasks: tasks/ip_addr.yaml
+      when: ipaddr_enabled | default(false)
+
+    - name: Include firewalld tasks
+      ansible.builtin.import_tasks: tasks/firewalld.yaml
+      when: firewalld_enabled | default(false)
 
     - name: Include cloudflare tunnel tasks
       ansible.builtin.import_tasks: tasks/cloudflare.yaml
       when: cf_enabled | default(false)
 
-    - name: Include install cloudflare-ddns tasks
+    - name: Include cloudflare-ddns tasks
       ansible.builtin.import_tasks: tasks/cf_ddns.yaml
       when: cf_ddns_enabled | default(false)
 
-    - name: Include install certbot tasks
-      ansible.builtin.import_tasks: tasks/certbot.yaml
-      when: certbot_enabled | default(false)
+    - name: Include nginx_certbot tasks
+      ansible.builtin.import_tasks: tasks/nginx_certbot.yaml
+      when: nginx_certbot_enabled | default(false)
 
-    - name: Include nginx tasks
-      ansible.builtin.import_tasks: tasks/nginx.yaml
-      when: nginx_enabled | default(false)
+    - name: Include zabbix tasks
+      ansible.builtin.import_tasks: tasks/zabbix_agent2.yaml
+      when: zabbix_enabled | default(false)
+
+    - name: Include promtail tasks
+      ansible.builtin.import_tasks: tasks/promtail.yaml
+      when: promtail_enabled | default(false)
