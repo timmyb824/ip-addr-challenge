@@ -24,6 +24,8 @@ markupsafe==2.1.2
     # via
     #   jinja2
     #   werkzeug
+python-dotenv==1.0.0
+    # via ip-addr-challenge (pyproject.toml)
 python-json-logger==2.0.7
     # via ip-addr-challenge (pyproject.toml)
 requests==2.30.0
