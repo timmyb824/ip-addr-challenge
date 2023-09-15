@@ -1,7 +1,9 @@
-from flask import Flask, render_template
-from src.ip import get_ip_address, get_location
 import socket
-from src.logs import logger
+
+from flask import Flask, render_template
+
+from src.ip import get_ip_address, get_location
+from src.logs.logger import logger
 
 app = Flask(__name__)
 
