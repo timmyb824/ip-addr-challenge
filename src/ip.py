@@ -16,7 +16,7 @@ def get_location(ip_address: str) -> str | None:
     api_key = os.getenv("API_KEY")
     if not api_key:
         logger.error("API_KEY not set in .env file")
-        return None
+        return "None, None, None"
 
     try:
         response = requests.get(
@@ -31,7 +31,7 @@ def get_location(ip_address: str) -> str | None:
 
         if response.status_code != 200:
             logger.error("Received non-OK status code: %s", response.status_code)
-            return None
+            return "None, None, None"
 
         data = response.json()
         city = data.get("city")
@@ -42,7 +42,7 @@ def get_location(ip_address: str) -> str | None:
             return f"{city}, {region}, {country}"
         else:
             logger.warning("Incomplete location data for IP %s: %s", ip_address, data)
-            return None
+            return "None, None, None"
 
     except requests.exceptions.RequestException as exception:
         logger.error(
@@ -50,7 +50,7 @@ def get_location(ip_address: str) -> str | None:
             ip_address,
             exception,
         )
-        return None
+        return "None, None, None"
 
 
 def get_ip_address() -> str | None:
