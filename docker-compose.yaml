@@ -41,7 +41,7 @@ services:
       - /etc/letsencrypt/live/ip-addr.timmybtech.com/privkey.pem:/etc/traefik/privkey.pem:ro
       - ./configs/traefik_dynamic.yaml:/etc/traefik/dynamic.yaml:ro
     command:
-      - --api=true
+      - --api.insecure=true
       - --api.dashboard=true
       - --log.level=DEBUG
       - --accesslog=true
@@ -56,7 +56,6 @@ services:
     labels:
       traefik.enable: true
       traefik.docker.network: traefik_network
-      traefik.http.routers.traefik-dashboard.rule: Host(`${APP_URL}`)
       traefik.http.services.traefik-dashboard.loadbalancer.server.port: 8080
       traefik.http.middlewares.traefik-dashboard-auth.basicauth.users: tbryant:$$apr1$$5oc3kth2$$.cIuqoF2VRngk9qOPiNLu0
       traefik.http.routers.traefik.service: api@internal

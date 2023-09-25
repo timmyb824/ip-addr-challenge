@@ -46,8 +46,7 @@ jobs:
             script: |
               cd /home/ubuntu/ip-addr
               git pull
-              pip install -r requirements.txt --no-warn-script-location
-              sudo systemctl restart ip-addr.service
+              docker compose up -d --force-recreate --build
 
 
   dockerPublish:
