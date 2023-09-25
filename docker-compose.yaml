@@ -41,8 +41,6 @@ services:
       - /etc/letsencrypt/live/ip-addr.timmybtech.com/privkey.pem:/etc/traefik/privkey.pem:ro
       - ./configs/traefik_dynamic.yaml:/etc/traefik/dynamic.yaml:ro
     command:
-      - --api.insecure=true
-      - --api.dashboard=true
       - --log.level=DEBUG
       - --accesslog=true
       - --metrics.prometheus=true
@@ -53,13 +51,6 @@ services:
       - --entrypoints.web.address=:80
       - --entrypoints.web.http.redirections.entrypoint.to=websecure
       - --entrypoints.websecure.address=:443
-    labels:
-      traefik.enable: true
-      traefik.docker.network: traefik
-      traefik.http.services.traefik-dashboard.loadbalancer.server.port: 8080
-      traefik.http.middlewares.traefik-dashboard-auth.basicauth.users: tbryant:$$apr1$$5oc3kth2$$.cIuqoF2VRngk9qOPiNLu0
-      traefik.http.routers.traefik.service: api@internal
-      traefik.http.routers.traefik.middlewares: traefik-dashboard-auth
 
 networks:
   default:
