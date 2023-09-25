@@ -55,7 +55,7 @@ services:
       - --entrypoints.websecure.address=:443
     labels:
       traefik.enable: true
-      traefik.docker.network: traefik_network
+      traefik.docker.network: traefik
       traefik.http.services.traefik-dashboard.loadbalancer.server.port: 8080
       traefik.http.middlewares.traefik-dashboard-auth.basicauth.users: tbryant:$$apr1$$5oc3kth2$$.cIuqoF2VRngk9qOPiNLu0
       traefik.http.routers.traefik.service: api@internal
@@ -63,5 +63,5 @@ services:
 
 networks:
   default:
-    name: traefik_network
+    name: traefik
     external: true
