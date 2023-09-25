@@ -12,7 +12,7 @@ services:
     # command: gunicorn src.main:app -w 2 --threads 2 -b 0.0.0.0:5001
     labels:
       traefik.enable: true
-      traefik.docker.network: traefik_network
+      traefik.docker.network: traefik
       traefik.http.routers.ip-addr-challenge.rule: Host(`ip-addr.timmybtech.com`)
       traefik.http.services.ip-addr-challenge.loadbalancer.server.port: 5001
 
