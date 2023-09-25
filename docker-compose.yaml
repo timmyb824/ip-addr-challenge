@@ -1,20 +1,68 @@
 version: "3"
 services:
   ip-addr-challenge:
-    build: .
+    # build: .
     # image: timmyb824/ip-addr-challenge:latest-arm64v8
+    image: timmyb824/ip-addr-challenge:latest
     container_name: ip-addr-challenge
-    ports:
-      - "5001:5001"
+    # ports:
+    #   - "5001:5001"
     restart: always
     # overrides the command in the Dockerfile if needed
     # command: gunicorn src.main:app -w 2 --threads 2 -b 0.0.0.0:5001
-  nginx:
-    image: nginx:latest
-    container_name: nginx
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik_network
+      traefik.http.routers.code-server.rule: Host(`ip-addr.timmybtech.com`)
+      traefik.http.services.code-server.loadbalancer.server.port: 5001
+
+
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./configs/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+  #   depends_on:
+  #     - ip-addr-challenge
+
+  traefik-app:
+    image: traefik:latest
+    container_name: traefik
+    restart: always
     ports:
-      - "80:80"
+      - 80:80
+      - 443:443
+      - 8080:8080
     volumes:
-      - ./configs/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    depends_on:
-      - ip-addr-challenge
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/letsencrypt/live/ip-addr.timmybtech.com/fullchain.pem:/etc/traefik/fullchain.pem:ro
+      - /etc/letsencrypt/live/ip-addr.timmybtech.com/privkey.pem:/etc/traefik/privkey.pem:ro
+      - ./configs/traefik_dynamic.yaml:/etc/traefik/dynamic.yaml:ro
+    command:
+      - --api=true
+      - --api.dashboard=true
+      - --log.level=DEBUG
+      - --accesslog=true
+      - --metrics.prometheus=true
+      - --providers.docker
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/etc/traefik/
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.websecure.address=:443
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik_network
+      traefik.http.routers.traefik-dashboard.rule: Host(`${APP_URL}`)
+      traefik.http.services.traefik-dashboard.loadbalancer.server.port: 8080
+      traefik.http.middlewares.traefik-dashboard-auth.basicauth.users: tbryant:$$apr1$$5oc3kth2$$.cIuqoF2VRngk9qOPiNLu0
+      traefik.http.routers.traefik.service: api@internal
+      traefik.http.routers.traefik.middlewares: traefik-dashboard-auth
+
+networks:
+  default:
+    name: traefik_network
+    external: true
