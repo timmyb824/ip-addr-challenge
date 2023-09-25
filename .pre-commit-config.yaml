@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/sourcery-ai/sourcery
-  rev: v1.2.0
+  rev: v1.10.0
   hooks:
   - id: sourcery
     # The best way to use Sourcery in a pre-commit hook:
@@ -9,7 +9,7 @@ repos:
     args: [--diff=git diff HEAD, --no-summary]
 
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
+    rev: v4.4.0
     hooks:
     -   id: check-yaml
         args: [--unsafe]
@@ -18,7 +18,7 @@ repos:
     -   id: check-toml
 
 -   repo: https://github.com/psf/black
-    rev: 23.7.0
+    rev: 23.9.1
     hooks:
     -   id: black
         language_version: python3.11
@@ -36,3 +36,8 @@ repos:
     hooks:
     -   id: isort
         args: ["--profile", "black"]
+
+-   repo: https://github.com/sirwart/ripsecrets
+    rev: v0.1.7
+    hooks:
+    -   id: ripsecrets-system
