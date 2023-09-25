@@ -2,5 +2,5 @@ tls:
   stores:
     default:
       defaultCertificate:
-        certFile: /etc/traefik/fullchain.pem
-        keyFile: /etc/traefik/privkey.pem
+        certFile: /etc/traefik/letsencrypt/live/ip-addr.timmybtech.com/fullchain.pem
+        keyFile: /etc/traefik/letsencrypt/live/ip-addr.timmybtech.com/privkey.pem

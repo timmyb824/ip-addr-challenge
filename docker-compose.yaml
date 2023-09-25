@@ -36,8 +36,8 @@ services:
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /etc/letsencrypt/live/ip-addr.timmybtech.com/fullchain.pem:/etc/traefik/fullchain.pem:ro
-      - /etc/letsencrypt/live/ip-addr.timmybtech.com/privkey.pem:/etc/traefik/privkey.pem:ro
+      - /etc/letsencrypt/live/ip-addr.timmybtech.com/fullchain.pem:/etc/traefik/letsencrypt/live/ip-addr.timmybtech.com/fullchain.pem:ro
+      - /etc/letsencrypt/live/ip-addr.timmybtech.com/privkey.pem:/etc/traefik/letsencrypt/live/ip-addr.timmybtech.com/privkey.pem:ro
       - ./configs/traefik_dynamic.yaml:/etc/traefik/dynamic.yaml:ro
     command:
       - --log.level=DEBUG
