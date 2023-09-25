@@ -45,8 +45,6 @@ services:
       - --metrics.prometheus=true
       - --providers.docker
       - --providers.docker.exposedbydefault=false
-      - --providers.file.directory=/etc/traefik/
-      - --providers.file.watch=true
       - --entrypoints.web.address=:80
       - --entrypoints.web.http.redirections.entrypoint.to=websecure
       - --entrypoints.websecure.address=:443
@@ -56,7 +54,7 @@ services:
       - --certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare
       - --certificatesresolvers.myresolver.acme.email=${MAIL_ADR}
       - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
-      - --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory # STG: https://acme-staging-v02.api.letsencrypt.org/directory  PROD: https://acme-v02.api.letsencrypt.org/directory
+      - --certificatesresolvers.myresolver.acme.caserver=https://acme-v02.api.letsencrypt.org/directory # STG: https://acme-staging-v02.api.letsencrypt.org/directory  PROD: https://acme-v02.api.letsencrypt.org/directory
     environment:
       CF_API_KEY: ${CF_API_KEY}
       CF_API_EMAIL: ${CF_API_EMAIL}
