@@ -13,8 +13,8 @@ services:
     labels:
       traefik.enable: true
       traefik.docker.network: traefik_network
-      traefik.http.routers.code-server.rule: Host(`ip-addr.timmybtech.com`)
-      traefik.http.services.code-server.loadbalancer.server.port: 5001
+      traefik.http.routers.ip-addr-challenge.rule: Host(`ip-addr.timmybtech.com`)
+      traefik.http.services.ip-addr-challenger.loadbalancer.server.port: 5001
 
 
   # nginx:
