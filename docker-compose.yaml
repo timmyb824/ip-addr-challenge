@@ -5,8 +5,8 @@ services:
     # image: timmyb824/ip-addr-challenge:latest-arm64v8
     image: timmyb824/ip-addr-challenge:latest
     container_name: ip-addr-challenge
-    # ports:
-    #   - "5001:5001"
+    ports:
+      - "5001:5001"
     restart: always
     # overrides the command in the Dockerfile if needed
     # command: gunicorn src.main:app -w 2 --threads 2 -b 0.0.0.0:5001
