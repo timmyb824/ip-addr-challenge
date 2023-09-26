@@ -51,7 +51,6 @@ services:
       - --entrypoints.web.address=:80
       - --entrypoints.web.http.redirections.entrypoint.to=websecure
       - --entrypoints.websecure.address=:443
-      - --entrypoints.websecure.http.tls=true
       - --entrypoints.websecure.http.tls.domains[0].main=${DOMAIN}
       - --entrypoints.websecure.http.tls.certresolver=myresolver
       - --certificatesresolvers.myresolver.acme.dnschallenge=true
@@ -67,8 +66,8 @@ services:
     labels:
       traefik.enable: true
       traefik.docker.network: traefik
-      traefik.http.routers.traefik-dashboard.rule: (Host(`${APP_URL}`) && Path(`/api`))
-      traefik.http.routers.traefik-dashboard.entrypoints: websecure
+      # traefik.http.routers.traefik-dashboard.rule: (Host(`${APP_URL}`) && Path(`/api`))
+      traefik.http.routers.traefik-dashboard.rule: Host(`${APP_URL}`
       traefik.http.services.traefik-dashboard.loadbalancer.server.port: 8080
       traefik.http.middlewares.traefik-dashboard-auth.basicauth.users: admin:$$2y$$05$$c6GmZwMYvt8DfP3D4DevUuC6pf7kA3KLNibdjn/7B3w1mlywQxNEK
       traefik.http.routers.traefik.service: api@internal
