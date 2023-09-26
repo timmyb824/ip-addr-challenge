@@ -136,3 +136,22 @@ resource "oci_core_network_security_group_security_rule" "homelab-igNSG_network_
     #source_port_range = <<Optional value not found in discovery>>
   }
 }
+
+resource "oci_core_network_security_group_security_rule" "homelab-igNSG_network_security_group_security_rule_8" {
+  description = "traefik-dashboard"
+  #destination = <<Optional value not found in discovery>>
+  destination_type          = ""
+  direction                 = "INGRESS"
+  network_security_group_id = oci_core_network_security_group.ipaddr-NSG.id
+  protocol                  = "6"
+  source                    = "0.0.0.0/0"
+  source_type               = "CIDR_BLOCK"
+  stateless                 = "false"
+  tcp_options {
+    destination_port_range {
+      max = "8080"
+      min = "8080"
+    }
+    #source_port_range = <<Optional value not found in discovery>>
+  }
+}
